@@ -1,0 +1,107 @@
+" Reference: https://www.cyberwizard.io/posts/the-ultimate-ideavim-setup/
+
+let mapleader=' '
+
+" General settings
+set scrolloff=10
+set linenumber
+set clipboard+=unnamed
+set showcmd
+
+" Search
+set ignorecase
+set smartcase
+
+" Plugins
+set surround
+set highlightedyank
+set commentary
+"set nerdtree " vim control of editor, need to investigate
+
+"""""" Mappings
+" General Searching 
+map <leader>ff <Action>(GotoFile)
+map <leader>s <Action>(SearchEverywhere)
+
+" Redo
+map <C-r> <Action>($Redo)
+
+
+" Jump Between Methods
+map <C-j> <Action>(MethodDown)
+map <C-k> <Action>(MethodUp)
+
+" Scrolling in autocomplete window
+" Handled as IDE shortcuts, see EditorActions Up and Down
+sethandler <C-k> n-v:vim i:ide " ignore error E492 
+
+" Tab Navigation // TODO
+" OLD
+" map <C-h> gT
+" map <C-l> gt
+" NEW
+map <C-b>p gT
+map <C-b>n gt
+
+" Pane Navigation
+map <C-A-h> <C-w>h
+map <C-A-l> <C-w>l
+map <C-A-j> <C-w>j
+map <C-A-k> <C-w>k
+
+" Open terminal
+map t <Action>(ActivateTerminalToolWindow)
+
+" Visual indenting
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+" Sane redo mapping
+" map U <C-r>
+
+" Refactoring (renaming)
+map <leader>r <Action>(RenameElement)
+
+" Show usages
+map <leader>fr <Action>(ShowUsages)
+
+" Run something that is runnable
+" map <S-CR> <Action>(RunClass)
+map <S-CR> <Action>(Run)
+
+" Hide active window
+map <C-x> <Action>(HideActiveWindow)
+
+" Prettify code
+map <leader>p <Action>(ReformatCode)
+
+" Show error
+map <leader>d <Action>(ShowErrorDescription)
+
+" Show doc (already a binding)
+" map <leader>k <Action>(QuickJavaDoc)
+
+" Zen mode
+map <leader>z <Action>(ToggleZenMode)
+
+" Type info (look whether I need this?)
+" map <leader>t <Action>(ExpressionTypeInfo)
+" File Tree
+map <leader>t <Action>(ActivateProjectToolWindow)
+
+" Code Actions
+map <leader>ca <Action>(ShowIntentionActions)
+
+" Opening "all" search
+map <C-S-p> <Action>(SearchEverywhere)
+
+"""" Harpooner Plugin settings
+" map <leader>fh <Action>(HarpoonerQuickMenu)
+" map <leader>m <Action>(HarpoonerAddFile)
+"
+" map <leader>1 <Action>(HarpoonerOpenFile0)
+" map <leader>2 <Action>(HarpoonerOpenFile1)
+" map <leader>3 <Action>(HarpoonerOpenFile2)
+" map <leader>4 <Action>(HarpoonerOpenFile3)
+" map <leader>5 <Action>(HarpoonerOpenFile4)
+

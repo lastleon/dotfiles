@@ -1,0 +1,354 @@
+let mapleader=' '
+
+" General Settings
+set nocompatible
+set ttyfast
+set clipboard+=unnamedplus
+set hidden
+set mouse=a
+" set autoindent
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+
+" UI
+set scrolloff=10
+set number
+set title
+set completeopt=noinsert,menuone,noselect
+set wildmenu
+set wildmode=longest,list
+set signcolumn=yes
+
+" Search
+" set showmatch "doesnt seem to do anything
+set ignorecase
+set smartcase
+set nohlsearch
+
+filetype plugin indent on
+syntax on
+
+" Plugins
+call plug#begin("~/.vim/plugged")
+" Theme
+Plug 'dasupradyumna/midnight.nvim'
+Plug 'rktjmp/lush.nvim'
+Plug 'kartikp10/noctis.nvim'
+Plug 'Mofiqul/vscode.nvim'
+Plug 'sainnhe/sonokai'
+Plug 'marko-cerovac/material.nvim'
+
+" Utils
+"" Syntax Highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+"" LSP & Autocompletion
+Plug 'neovim/nvim-lspconfig' " Collection of LSP configurations
+Plug 'hrsh7th/nvim-cmp' " Main autocompletion plugin
+Plug 'hrsh7th/cmp-nvim-lsp' " V Plugins for nvim-cmp 
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip' " Lua Snippets
+Plug 'rafamadriz/friendly-snippets'
+
+" Plug 'dundalek/lazy-lsp.nvim' " Automatic LSP Installation TODO
+Plug 'windwp/nvim-autopairs' " Add brackets after functions
+Plug 'onsails/lspkind.nvim' " Shows pictograms for autocomplete suggestions
+Plug 'ray-x/lsp_signature.nvim' " Show function signature"
+" Plug 'nvimdev/lspsaga.nvim'
+
+"" Navigation
+Plug 'nvim-lua/plenary.nvim' " telescope dependency
+Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+Plug 'nvim-telescope/telescope-frecency.nvim'
+
+"" QoL
+Plug 'yamatsum/nvim-cursorline' " Cursor line highlighted
+Plug 'kosayoda/nvim-lightbulb'
+Plug 'RRethy/vim-illuminate' " Underlines / highlights all other occurences of var
+" Plug 'nvim-lualine/lualine.nvim'
+Plug 'folke/todo-comments.nvim' " Highlights TODOs etc
+
+"""""""" TODO:
+" jinzhongjia/LspUI.nvim
+" numToStr/Comment.nvim
+" AckslD/nvim-neoclip.lua
+" ms-jpq/chadtree
+" nvim-lualine/lualine.nvim
+" akinsho/toggleterm.nvim
+"
+" THEMES:
+" navarasu/onedark.nvim
+" sainnhe/edge
+" Th3Whit3Wolf/onebuddy
+" marko-cerovac/material.nvim
+call plug#end()
+
+" Theme Setup
+set termguicolors
+colorscheme material-darker
+
+"" Telescope Setup TODO
+" Search Files
+nnoremap <leader>ff <cmd>Telescope frecency theme=dropdown<cr>
+" Search Everything
+nnoremap <leader>s <cmd>Telescope live_grep<cr>
+" " Git
+" nnoremap gb <cmd>Telescope git_branches<cr>
+" nnoremap gs <cmd>Telescope git_status<cr>
+" " Treesitter navigation
+" nnoremap fs <cmd>Telescope treesitter<cr>
+
+"" Custom keybindings
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+" solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
+inoremap <C-BS> <C-w>
+inoremap <C-h> <C-w>
+
+" Mappings for switching lines up and down like in other editors
+nnoremap <silent> <A-j> :m .+1<CR>==
+nnoremap <silent> <A-k> :m .-2<CR>==
+inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
+inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
+vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+
+" Autocompletion on tab instead of enter (I don't know if this works (: )
+inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>"
+
+" Remap e to Shift - w (don't know why anymore)
+nnoremap <S-w> e
+
+" Keybinding: Opening terminal TODO
+nnoremap t <cmd>split<cr><C-w>j<cmd>term<cr>i
+
+" Jump to next/previous function
+map <C-j> ]m
+map <C-k> [m
+
+" Indenting
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+" TODO: Map shift tab in insert mode
+ 
+"" Autocompletion Setup
+lua << EOF
+-- Theme
+require'material'.setup {
+	plugins = {
+		"nvim-cmp",
+		"telescope"
+		},
+	}
+
+-- BRACKETS AFTER FUNCTIONS SETUP
+require'nvim-autopairs'.setup {
+	disable_filetype = { "TelescopePrompt" , "guihua", "guihua_rust", "clap_input" },
+}
+
+if vim.o.ft == 'clap_input' and vim.o.ft == 'guihua' and vim.o.ft == 'guihua_rust' then
+  require'cmp'.setup.buffer { completion = {enable = false} }
+end
+
+-- TELESCOPE SETUP
+telescope = require'telescope'
+telescope.setup {
+	defaults = {
+		scroll_strategy = "limit",
+		file_ignore_pattern = { ".git/[^h]" },
+		mappings = {
+			i = {
+				["<C-h>"] = { "<C-S-w>", type = "command"},
+				-- Binding to delete whole words in insert mode using C-BS
+				-- Expl.: Keys Ctrl+Backspace send Ctrl+h to the terminal,
+				--		  so Ctrl+h needs to be remapped
+				["<C-j>"] = "move_selection_next",
+				["<C-k>"] = "move_selection_previous",
+			}
+		}, 
+	},
+	pickers = {
+		find_files = {
+			theme = "dropdown",
+			initial_mode = "insert",
+		},
+		live_grep = {
+			theme = "dropdown",
+			initial_mode = "insert",
+		},
+		lsp_document_symbols = {
+			theme = "dropdown",
+			initial_mode = "insert",
+		},
+	},
+	extensions = {
+		frecency = {
+			default_workspace = "CWD",
+			show_scores=true
+			-- additional config is in mapping
+		}
+	}
+}
+
+telescope.load_extension 'frecency'
+
+-- TREESITTER SETUP
+require'nvim-treesitter.configs'.setup {
+	auto_install = true,
+
+	highlight = { enable = true},
+	indent = { enable = true },
+}
+
+
+-- LSP AND AUTOCOMPLETION SETUP
+local cmp_autopairs = require'nvim-autopairs.completion.cmp'
+local luasnip = require'luasnip'
+local cmp = require'cmp'
+
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+-- SETUP
+
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+) -- for autopairs
+
+vim.api.nvim_create_autocmd("TermClose", {
+    callback = function()
+       vim.cmd("close")
+    end
+}) -- close terminal when shell exits
+
+local lspkind = require'lspkind'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+		luasnip.lsp_expand(args.body)
+    end,
+  },
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol', -- show only symbol annotations
+      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+      ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+    })
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+	['<CR>'] = cmp.mapping.confirm({ select = true }), 
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+	["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+  }),
+  sources = cmp.config.sources(
+	{{ name = 'nvim_lsp' }, { name = 'luasnip' }},
+	{{ name = 'buffer' }}
+  )
+})
+
+require'lsp_signature'.setup {
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = "rounded"
+  }
+}
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+-- SETUP LAZY-LSP FOR AUTOINSTALLATION OF LSP SERVER
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- require"lazy-lsp".setup {
+-- 	preferred_servers = {
+-- 		python = { "pyright" }
+-- 	},
+-- 
+-- 	default_config = {
+-- 		capabilities = capabilities,
+-- 	}
+-- }
+
+-- Better LSP: navigator.lua
+
+-- QoL
+---- Cursorline
+require'nvim-cursorline'.setup {
+	cursorline = {
+		enable = true,
+		timeout = 0,
+		number = false
+		},
+	cursorword = {
+		enable = false
+		}
+	}
+
+--- require('lualine').setup()
+
+---- TODO highlighting
+require'todo-comments'.setup {}
+
+require'lspconfig'.rust_analyzer.setup {}
+
+EOF
+
+" Highlighted Yank (after this line lua highlighting is weird)
+au TextYankPost * silent! lua vim.highlight.on_yank() 

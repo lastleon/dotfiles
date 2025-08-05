@@ -1,0 +1,29 @@
+" Mappings for switching lines up and down like in other editors
+nnoremap <silent> <A-j> :m .+1<CR>==
+nnoremap <silent> <A-k> :m .-2<CR>==
+inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
+inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
+vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+
+" Remap e to Shift - w (don't know why anymore)
+nnoremap <S-w> e
+
+" Keybinding: Opening terminal TODO
+nnoremap t <cmd>split<cr><C-w>j<cmd>term<cr>i
+
+" Navigating in panes
+" Previously used before tmux integration
+nnoremap <C-A-h> <C-w>h
+nnoremap <C-A-j> <C-w>j
+nnoremap <C-A-k> <C-w>k
+nnoremap <C-A-l> <C-w>l
+
+" Resizing panes
+" Previously used before tmux integration
+nnoremap <A-+> <cmd>res +1<cr>
+nnoremap <A--> <cmd>res -1<cr>
+nnoremap <A-*> <cmd>vertical: res +1<cr>
+nnoremap <A-_> <cmd>vertical: res -1<cr>
+
+nnoremap <A-=> <C-w>=

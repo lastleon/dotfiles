@@ -1,0 +1,505 @@
+let mapleader=' '
+
+" General Settings
+set nocompatible
+set ttyfast
+set clipboard+=unnamedplus
+set hidden
+set mouse=a
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+
+" UI
+set scrolloff=10
+set number
+set title
+set completeopt=menu,menuone
+set wildmenu
+set wildmode=longest,list
+set signcolumn=yes
+set conceallevel=0
+set pumheight=10
+set breakindent  " when softwrapping, indents the wrapped text the same as the original line
+set cursorline  " highlights current line
+
+" Search
+" set showmatch "doesnt seem to do anything
+set ignorecase
+set smartcase
+set nohlsearch
+
+filetype plugin indent on
+syntax on
+
+" Plugins
+call plug#begin("~/.vim/plugged")
+" Theme
+Plug 'dasupradyumna/midnight.nvim'
+Plug 'rktjmp/lush.nvim'
+Plug 'kartikp10/noctis.nvim'
+Plug 'Mofiqul/vscode.nvim'
+Plug 'sainnhe/sonokai'
+Plug 'marko-cerovac/material.nvim'
+Plug 'ellisonleao/gruvbox.nvim'
+"Plug 'tanvirtin/monokai.nvim'
+Plug 'loctvl842/monokai-pro.nvim'
+Plug 'folke/tokyonight.nvim'
+Plug 'rose-pine/neovim'
+
+" Utils
+"" Syntax Highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+"" LSP & Autocompletion
+Plug 'Tummetott/reticle.nvim/'
+Plug 'neovim/nvim-lspconfig' " Collection of LSP configurations
+Plug 'hrsh7th/nvim-cmp' " Main autocompletion plugin
+Plug 'hrsh7th/cmp-nvim-lsp' " V Plugins for nvim-cmp 
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip' " Lua Snippets
+Plug 'rafamadriz/friendly-snippets'
+Plug 'windwp/nvim-autopairs' " Add brackets after functions
+Plug 'onsails/lspkind.nvim' " Shows pictograms for autocomplete suggestions
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+
+" Plug 'nvimdev/lspsaga.nvim'
+Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+Plug 'ray-x/navigator.lua'
+
+"" Navigation
+Plug 'nvim-lua/plenary.nvim' " telescope dependency
+Plug 'nvim-telescope/telescope.nvim', { 'branch': '0.1.x' }
+Plug 'nvim-telescope/telescope-frecency.nvim'
+Plug 'nvim-neo-tree/neo-tree.nvim'
+Plug 'MunifTanjim/nui.nvim'
+
+
+"" QoL
+Plug 'kosayoda/nvim-lightbulb'
+Plug 'RRethy/vim-illuminate' " Underlines / highlights all other occurences of var
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'arkav/lualine-lsp-progress'
+Plug 'folke/todo-comments.nvim' " Highlights TODOs etc
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' } " Unsure whether to keep it or not
+Plug 'SmiteshP/nvim-navic'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'utilyre/barbecue.nvim'
+Plug 'AckslD/nvim-neoclip.lua'
+Plug 'NMAC427/guess-indent.nvim'
+Plug 'numToStr/Comment.nvim'
+
+" Lanuguage Support
+Plug 'kaarmu/typst.vim'
+
+"""""""" TODO:
+" ms-jpq/chadtree
+" akinsho/toggleterm.nvim
+"
+" THEMES:
+" navarasu/onedark.nvim
+" sainnhe/edge
+" Th3Whit3Wolf/onebuddy
+call plug#end()
+
+" Theme Setup
+set termguicolors
+colorscheme material-darker
+
+"" Telescope Setup TODO
+" Search Files ([f]ind [f]iles)
+nnoremap <leader>ff <cmd>Telescope frecency theme=dropdown<cr>
+" Search Everything ([s]earch)
+nnoremap <leader>s <cmd>Telescope live_grep<cr>
+" Search paste yanks ([f]ind yanks)
+nnoremap <leader>fy <cmd>Telescope neoclip theme=dropdown<cr>
+" " Search help files ([f]ind [d]oc)
+" nnoremap <leader>fd <cmd>Telescope help_tags theme=dropdown<cr>
+
+"" Custom keybindings
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+" solution: https://vim.fandom.com/wiki/Map_Ctrl-Backspace_to_delete_previous_word
+inoremap <C-BS> <C-w>
+inoremap <C-h> <C-w>
+
+cnoremap <C-BS> <C-w> " Same thing in command mode
+cnoremap <C-h> <C-w>
+
+" Mappings for switching lines up and down like in other editors
+nnoremap <silent> <A-j> :m .+1<CR>==
+nnoremap <silent> <A-k> :m .-2<CR>==
+inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
+inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <A-j> :m '>+1<CR>gv=gv
+vnoremap <silent> <A-k> :m '<-2<CR>gv=gv
+
+" Autocompletion on tab instead of enter (I don't know if this works (: )
+inoremap <expr> <TAB> pumvisible() ? "<C-y>" : "<TAB>"
+
+" Remap e to Shift - w (don't know why anymore)
+nnoremap <S-w> e
+
+" Keybinding: Opening terminal TODO
+nnoremap t <cmd>split<cr><C-w>j<cmd>term<cr>i
+
+" Jump to next/previous function
+map <C-j> ]m
+map <C-k> [m
+
+" Indenting
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+inoremap <S-Tab> <esc><S-v><gi
+
+" Navigating in panes
+nnoremap <C-A-h> <C-w>h
+nnoremap <C-A-j> <C-w>j
+nnoremap <C-A-k> <C-w>k
+nnoremap <C-A-l> <C-w>l
+
+" Resizing panes
+nnoremap <A-+> <cmd>res +1<cr>
+nnoremap <A--> <cmd>res -1<cr>
+nnoremap <A-*> <cmd>vertical: res +1<cr>
+nnoremap <A-_> <cmd>vertical: res -1<cr>
+
+nnoremap <A-=> <C-w>=
+
+" Override Guihua highlighting style
+hi! link GuihuaListSelHl TelescopeSelection
+
+"" Autocompletion Setup
+lua << EOF
+-- Theme
+require'material'.setup {
+	plugins = {
+		"nvim-cmp",
+		"telescope",
+		"illuminate",
+	},
+	lualine_style = "stealth",
+	high_visibility = {
+		darker = true,
+	},
+}
+
+-- BRACKETS AFTER FUNCTIONS SETUP
+require'nvim-autopairs'.setup {
+	disable_filetype = { "TelescopePrompt" , "guihua", "guihua_rust", "clap_input" },
+}
+
+if vim.o.ft == 'clap_input' and vim.o.ft == 'guihua' and vim.o.ft == 'guihua_rust' then
+  require'cmp'.setup.buffer { completion = {enable = false} }
+end
+
+-- TELESCOPE SETUP
+telescope = require'telescope'
+telescope.setup {
+	defaults = {
+		scroll_strategy = "limit",
+		file_ignore_pattern = { ".git/[^h]" },
+		mappings = {
+			i = {
+				["<C-h>"] = { "<C-S-w>", type = "command"},
+				-- Binding to delete whole words in insert mode using C-BS
+				-- Expl.: Keys Ctrl+Backspace send Ctrl+h to the terminal,
+				--		  so Ctrl+h needs to be remapped
+				["<C-j>"] = "move_selection_next",
+				["<C-k>"] = "move_selection_previous",
+			}
+		}, 
+	},
+	pickers = {
+		find_files = {
+			theme = "dropdown",
+			initial_mode = "insert",
+		},
+		live_grep = {
+			theme = "dropdown",
+			initial_mode = "insert",
+		},
+		lsp_document_symbols = {
+			theme = "dropdown",
+			initial_mode = "insert",
+		},
+	},
+	extensions = {
+		frecency = {
+			default_workspace = "CWD",
+			show_scores=true
+			-- additional config is in mapping
+		}
+	}
+}
+
+telescope.load_extension 'frecency'
+
+-- TREESITTER SETUP
+require'nvim-treesitter.configs'.setup {
+	auto_install = true,
+
+	highlight = { enable = true},
+	indent = { enable = true },
+}
+
+
+-- AUTOCOMPLETION SETUP
+local cmp_autopairs = require'nvim-autopairs.completion.cmp'
+local luasnip = require'luasnip'
+local cmp = require'cmp'
+
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+) -- for autopairs
+
+local lspkind = require'lspkind'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+		luasnip.lsp_expand(args.body)
+    end,
+  },
+  formatting = {
+	fields = { "kind", "abbr", "menu" },
+	format = function(entry, vim_item)
+      local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50})(entry, vim_item)
+      local strings = vim.split(kind.kind, "%s", { trimempty = true })
+      kind.kind = " " .. (strings[1] or "") .. " "
+      kind.menu = "    (" .. (strings[2] or "") .. ")"
+
+      return kind
+    end,
+  },
+  window = {
+	completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+	['<CR>'] = cmp.mapping.confirm({ select = true }), 
+    ['<C-j>'] = cmp.mapping(function(fallback) 
+		if cmp.visible() then
+			cmp.select_next_item()
+		else 
+			fallback()
+		end
+	  end, {"i", "s", "c"}),
+    ['<C-k>'] = cmp.mapping(function(fallback) 
+		if cmp.visible() then
+			cmp.select_prev_item()
+		else 
+			fallback()
+		end
+	  end, {"i", "s", "c"}),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping(function(fallback)
+	  if not cmp.visible() then
+		  cmp.select_next_item() -- workaround to highlight first selection, doesn't seem to work all the time
+		  cmp.select_prev_item()
+		  cmp.complete({ select = true })
+	  else 
+		  fallback()
+	  end
+	end, {"i", "s", "c"}),
+    ['<C-e>'] = cmp.mapping.abort(),
+	["<Tab>"] = cmp.mapping(function(fallback)
+	  if cmp.visible() then
+		cmp.confirm({ select = true })
+	  elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s", "c"}),
+
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s", "c"}),
+  }),
+  sources = cmp.config.sources(
+	{{ name = 'nvim_lsp' }, { name = 'luasnip' }},
+	{{ name = 'buffer' }}
+  )
+})
+
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+
+-- LSP UI SETUP
+require'navigator'.setup {
+  default_mapping = false,
+  transparency = 10,
+  mason = true,
+
+  ts_fold = {
+	  enable = false,
+  },
+
+  lsp = {
+	format_on_save = false, 
+	code_lens_action = { enable = false },
+  },
+  icons = {
+    icons = true,
+    code_action_icon = "💡",
+  },
+
+  keymaps = {
+	{ key = '<leader>fs', func = require('navigator.symbols').document_symbols, desc = 'document_symbols' },
+	{ key = '<leader>fu', func = require('navigator.reference').async_ref, desc = 'async_ref' },
+	{ key = 'gd', func = require('navigator.definition').definition, desc = 'definition' },
+	{ key = 'gpd', func = require('navigator.definition').definition_preview, desc = 'definition_preview' },
+	{ key = 'gt', func = vim.lsp.buf.type_definition, desc = 'type_definition' },
+	{ key = 'gpt', func = require('navigator.definition').type_definition_preview, desc = 'type_definition_preview' },
+	-- I think so { key = 'gi', func = vim.lsp.buf.implementation, desc = 'implementation' },
+	-- Refactoring
+	{ key = '<leader>r', func = require('navigator.rename').rename, desc = 'rename' },
+	{ key = '<leader>p', mode = 'n', func = vim.lsp.buf.format, desc = 'format' },
+	{ key = '<leader>p', mode = 'v', func = vim.lsp.buf.range_formatting, desc = 'range format' },
+	{ key = '<leader>ca', mode = 'n', func = require('navigator.codeAction').code_action, desc = 'code_action' },
+  },
+}
+
+require'guihua.maps'.setup {
+  maps = {
+	prev = '<C-k>',
+    next = '<C-j>',
+  }
+}
+
+-- LSP INSTALLER SETUP
+require'mason'.setup {}
+require'mason-lspconfig'.setup {}
+require'mason-lspconfig'.setup_handlers {
+	function (server_name)
+		require("lspconfig")[server_name].setup {}
+	end,
+	["typst_lsp"] = function() 
+		require'lspconfig'.typst_lsp.setup {
+			settings = {
+				exportPdf = "onSave"
+			},
+		}
+	end,
+	["ltex"] = function()
+		require'lspconfig'.ltex.setup {
+			settings = {
+				ltex = {
+					-- language = "en-US",
+					language = "de-DE",
+				}
+			},
+			-- filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex", "pandoc", "quarto", "rmd", "typst"}
+			filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex", "pandoc", "quarto", "rmd"}
+		}
+	end
+}
+
+
+-- Neotree
+--require'neo-tree'.setup {}
+
+-- QoL
+-- Smarter cursorline management
+require'reticle'.setup {
+	on_startup = {
+		cursorline = true,
+	},
+
+	disable_in_insert = false,
+}
+
+
+require'lualine'.setup {
+	sections = {
+		lualine_a = {'mode',},
+		lualine_b = {'filename', 'diagnostics'},
+		lualine_c = {'branch', 'diff', 'lsp_progress'},
+		lualine_x = {'encoding', 'fileformat', 'filetype'},
+		lualine_y = {'progress'},
+		lualine_z = {'location'}
+	},
+	globalstatus = true,
+}
+
+---- TODO highlighting
+require'todo-comments'.setup {}
+
+---- harpoon
+-- setup for harpoon2
+local harpoon = require'harpoon' 
+
+harpoon:setup {}
+
+vim.keymap.set("n", "<Space>fh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<Space>m", function() harpoon:list():append() end)
+
+vim.keymap.set("n", "<Space>h", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<Space>l", function() harpoon:list():next() end)
+
+harpoon:extend({
+  UI_CREATE = function(cx)
+    --vim.keymap.set("n", "<C-v>", function()
+    --  harpoon.ui:select_menu_item({ vsplit = true })
+    --end, { buffer = cx.bufnr })
+
+    --vim.keymap.set("n", "<C-x>", function()
+    --  harpoon.ui:select_menu_item({ split = true })
+    --end, { buffer = cx.bufnr })
+
+    vim.keymap.set("n", "<C-t>", function()
+      harpoon.ui:select_menu_item({ tabedit = true })
+    end, { buffer = cx.bufnr })
+  end,
+})
+
+--- winbar
+require'barbecue'.setup {}
+
+--- neoclip
+require'neoclip'.setup {
+	keys = {
+		telescope = {
+			i = {
+				paste_behind = "<Nop>"
+			}
+		}
+	}
+}
+
+--- automatic indentation guessing
+require'guess-indent'.setup {}
+
+-- easier commenting
+require'Comment'.setup {}
+
+--- LANGUAGE SUPPORT SETUP
+vim.g.typst_conceal = 1
+
+EOF
+
+" Highlighted Yank (after this line lua highlighting is weird)
+au TextYankPost * silent! lua vim.highlight.on_yank() 

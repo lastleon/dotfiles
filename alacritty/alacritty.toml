@@ -1,0 +1,29 @@
+
+[window]
+dynamic_padding = true
+
+decorations = "Full"
+decorations_theme_variant = "Dark"
+
+[window.dimensions]
+columns = 80
+lines = 24
+
+[font]
+normal = { family = "UbuntuMono Nerd Font Mono"}
+size = 13
+
+[mouse]
+hide_when_typing = false
+
+[cursor]
+style = { blinking = "On" }
+blink_interval = 550
+blink_timeout = 10
+
+[general]
+
+live_config_reload = true
+import = [
+    "~/.config/alacritty/themes/ubuntu_dark_bg.toml"
+]

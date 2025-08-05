@@ -1,0 +1,163 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+      // "space t": "workspace::ToggleLeftDock"
+    }
+  },
+  // General Navigation
+  {
+    // filetree, Empty windows and Editor in Normal mode (and not in menu)
+    "context": "ProjectPanel || EmptyPane || SharedScreen || VimControl && !menu ",
+    "bindings": {
+      "space t": "workspace::ToggleLeftDock",
+      "space f f": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // Put key bindings here if you want them to work in normal & visual mode.
+    }
+  },
+
+  // Uncategorized
+  {
+    "context": "VimControl && !menu && vim_mode == visual",
+    "bindings": {
+      // Put key bindings here if you want them to work in visual mode.
+      "tab": "editor::Indent",
+      "shift-tab": "editor::Outdent"
+    }
+  },
+  {
+    "context": "VimControl && vim_mode == normal && !menu",
+    "bindings": {
+      "space p": "editor::Format",
+      "space r": "editor::Rename",
+      "space c a": "editor::ToggleCodeActions",
+      "space i h": "editor::ToggleInlayHints"
+      // "space d": "diagnostics::ToggleWarnings",
+      // "shift-y": ["workspace::SendKeystrokes", "y $"] // Use neovim's yank behavior: yank to end of line.
+    }
+  },
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // "j k": "vim::NormalBefore" // In insert mode, make jk escape to normal mode.
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "Editor && menu",
+    "bindings": {
+      "ctrl-j": "editor::ContextMenuNext",
+      "ctrl-k": "editor::ContextMenuPrev"
+      // "j": "command_palette::NavigateDown",
+      // "k": "command_palette::NavigateUp",
+      // "l": "command_palette::NavigateRight"
+    }
+  },
+  {
+    "context": "Editor && mode == single_line", // Basically FilePicker, but need to do it this way
+    "bindings": {
+      "ctrl-j": "menu::SelectNext",
+      "ctrl-k": "menu::SelectPrev"
+    }
+  },
+  {
+    "context": "Editor || ProjectPanel || CollabPanel || OutlinePanel || ChatPanel || VimControl || EmptyPane || SharedScreen || MarkdownPreview || KeyContextView || Terminal",
+    "bindings": {
+      // window stuff
+      "ctrl-b": null,
+      "ctrl-b n": "pane::ActivateNextItem",
+      "ctrl-b p": "pane::ActivatePrevItem",
+      "ctrl-b %": "pane::SplitRight",
+      "ctrl-b \"": "pane::SplitDown",
+      "ctrl-b c": "workspace::NewFile",
+      "ctrl-b t": "workspace::ToggleBottomDock",
+      "ctrl-alt-h": "workspace::ActivatePaneLeft",
+      "ctrl-alt-l": "workspace::ActivatePaneRight",
+      "ctrl-alt-k": "workspace::ActivatePaneUp",
+      "ctrl-alt-j": "workspace::ActivatePaneDown",
+      "alt-l": "vim::ResizePaneRight",
+      "alt-h": "vim::ResizePaneLeft",
+      "alt-k": "vim::ResizePaneDown",
+      "alt-j": "vim::ResizePaneUp"
+
+      // // window related commands (ctrl-w X)
+      // "ctrl-alt": null,
+      // // important:
+      // "ctrl-alt h": ["workspace::ActivatePaneInDirection", "Left"],
+      // "ctrl-alt l": ["workspace::ActivatePaneInDirection", "Right"],
+      // "ctrl-alt k": ["workspace::ActivatePaneInDirection", "Up"],
+      // "ctrl-alt j": ["workspace::ActivatePaneInDirection", "Down"],
+      // // important: others, taken from default config
+      // "ctrl-b left": ["workspace::ActivatePaneInDirection", "Left"],
+      // "ctrl-b right": ["workspace::ActivatePaneInDirection", "Right"],
+      // "ctrl-b up": ["workspace::ActivatePaneInDirection", "Up"],
+      // "ctrl-b down": ["workspace::ActivatePaneInDirection", "Down"],
+      // "ctrl-b ctrl-h": ["workspace::ActivatePaneInDirection", "Left"],
+      // "ctrl-b ctrl-l": ["workspace::ActivatePaneInDirection", "Right"],
+      // "ctrl-b ctrl-k": ["workspace::ActivatePaneInDirection", "Up"],
+      // "ctrl-b ctrl-j": ["workspace::ActivatePaneInDirection", "Down"],
+      // "ctrl-b shift-left": ["workspace::SwapPaneInDirection", "Left"],
+      // "ctrl-b shift-right": ["workspace::SwapPaneInDirection", "Right"],
+      // "ctrl-b shift-up": ["workspace::SwapPaneInDirection", "Up"],
+      // "ctrl-b shift-down": ["workspace::SwapPaneInDirection", "Down"],
+      // "ctrl-b shift-h": ["workspace::SwapPaneInDirection", "Left"],
+      // "ctrl-b shift-l": ["workspace::SwapPaneInDirection", "Right"],
+      // "ctrl-b shift-k": ["workspace::SwapPaneInDirection", "Up"],
+      // "ctrl-b shift-j": ["workspace::SwapPaneInDirection", "Down"],
+      // "ctrl-b >": ["vim::ResizePane", "Widen"],
+      // "ctrl-b <": ["vim::ResizePane", "Narrow"],
+      // "ctrl-b -": ["vim::ResizePane", "Shorten"],
+      // "ctrl-b +": ["vim::ResizePane", "Lengthen"],
+      // "ctrl-b _": "vim::MaximizePane",
+      // "ctrl-b =": "vim::ResetPaneSizes",
+      // "ctrl-b g t": "pane::ActivateNextItem",
+      // "ctrl-b ctrl-g t": "pane::ActivateNextItem",
+      // "ctrl-b g shift-t": "pane::ActivatePrevItem",
+      // "ctrl-b ctrl-g shift-t": "pane::ActivatePrevItem",
+      // "ctrl-b w": "workspace::ActivateNextPane",
+      // "ctrl-b ctrl-w": "workspace::ActivateNextPane",
+      // "ctrl-b p": "workspace::ActivatePreviousPane",
+      // "ctrl-b ctrl-p": "workspace::ActivatePreviousPane",
+      // "ctrl-b shift-w": "workspace::ActivatePreviousPane",
+      // "ctrl-b ctrl-shift-w": "workspace::ActivatePreviousPane",
+      // "ctrl-b v": "pane::SplitVertical",
+      // "ctrl-b ctrl-v": "pane::SplitVertical",
+      // "ctrl-b s": "pane::SplitHorizontal",
+      // "ctrl-b shift-s": "pane::SplitHorizontal",
+      // "ctrl-b ctrl-s": "pane::SplitHorizontal",
+      // "ctrl-b c": "pane::CloseAllItems",
+      // "ctrl-b ctrl-c": "pane::CloseAllItems",
+      // "ctrl-b q": "pane::CloseAllItems",
+      // "ctrl-b ctrl-q": "pane::CloseAllItems",
+      // "ctrl-b o": "workspace::CloseInactiveTabsAndPanes",
+      // "ctrl-b ctrl-o": "workspace::CloseInactiveTabsAndPanes",
+      // "ctrl-b n": "workspace::NewFileSplitHorizontal",
+      // "ctrl-b ctrl-n": "workspace::NewFileSplitHorizontal"
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "j": ["vim::Down", { "display_lines": true }],
+      "k": ["vim::Up", { "display_lines": true }]
+    }
+  }
+]
